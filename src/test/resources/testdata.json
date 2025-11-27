@@ -1,0 +1,9 @@
+{
+  "pets": [
+    { "id": 1001, "name": "Doggie", "status": "available" },
+    { "id": 1002, "name": "Kitty", "status": "available" },
+    { "id": 1003, "name": "Parrot", "status": "available" },
+    { "id": 1004, "name": "Rabbit", "status": "available" }
+  ]
+}
+

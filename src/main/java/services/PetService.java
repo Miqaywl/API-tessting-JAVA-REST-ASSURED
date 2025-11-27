@@ -1,9 +1,8 @@
 package services;
+
 import core.ApiClient;
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import models.Pet;
-
 
 public class PetService {
     private static final String PET = "/pet";
@@ -17,9 +16,6 @@ public class PetService {
     public Response getPet(long id) {
         return ApiClient.getRequest()
                 .get(PET + "/" + id);
-    }
-    public PetService() {
-        RestAssured.baseURI = "https://petstore.swagger.io/v2";
     }
 
     public Response updatePet(Pet pet) {

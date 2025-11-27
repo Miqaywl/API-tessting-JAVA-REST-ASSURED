@@ -1,22 +1,23 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Pet {
 
     private long id;
     private String name;
     private String status;
 
-    // Constructor that matches your tests
     public Pet(long id, String name, String status) {
         this.id = id;
         this.name = name;
         this.status = status;
     }
 
-    // Default constructor (needed for RestAssured JSON deserialization)
-    public Pet() {}
+    public Pet() {
+    }
 
-    // Getters & Setters
     public long getId() {
         return id;
     }

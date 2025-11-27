@@ -4,21 +4,25 @@ import base.TestBase;
 import models.Pet;
 import org.testng.annotations.Test;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class PetTests extends TestBase {
 
     @Test
     public void createPetTest() {
-        Pet pet = new Pet(1001, "Doggie", "available");
+        Pet pet = buildPet("Doggie", "available");
 
         var response = petService.addPet(pet);
 
         petAssertions.assertStatusCode(response, 200);
         petAssertions.assertPetCreated(response, pet);
+
+        petService.deletePet(pet.getId());
     }
 
     @Test
     public void getPetByIdTest() {
-        Pet pet = new Pet(1002, "Kitty", "available");
+        Pet pet = buildPet("Kitty", "available");
 
         petService.addPet(pet);
 
@@ -26,11 +30,13 @@ public class PetTests extends TestBase {
 
         petAssertions.assertStatusCode(response, 200);
         petAssertions.assertPetReturned(response, pet);
+
+        petService.deletePet(pet.getId());
     }
 
     @Test
     public void updatePetTest() {
-        Pet pet = new Pet(1003, "Parrot", "available");
+        Pet pet = buildPet("Parrot", "available");
         petService.addPet(pet);
 
         pet.setName("GreenParrot");
@@ -40,11 +46,13 @@ public class PetTests extends TestBase {
 
         petAssertions.assertStatusCode(response, 200);
         petAssertions.assertPetUpdated(response, pet);
+
+        petService.deletePet(pet.getId());
     }
 
     @Test
     public void deletePetTest() {
-        Pet pet = new Pet(1004, "Rabbit", "available");
+        Pet pet = buildPet("Rabbit", "available");
         petService.addPet(pet);
 
         var deleteResponse = petService.deletePet(pet.getId());
@@ -56,7 +64,7 @@ public class PetTests extends TestBase {
 
     @Test
     public void getNonExistingPetTest() {
-        long invalidId = 9999999;
+        long invalidId = generatePetId();
 
         var response = petService.getPet(invalidId);
 
@@ -64,20 +72,36 @@ public class PetTests extends TestBase {
     }
 
     @Test
-    public void updateNonExistingPetTest() {
-        Pet pet = new Pet(888888, "GhostPet", "unknown");
+    public void updateMissingPetCreatesNewEntryTest() {
+        Pet pet = buildPet("GhostPet", "unknown");
 
         var response = petService.updatePet(pet);
 
-        petAssertions.assertStatusCode(response, 404);
+        petAssertions.assertStatusCode(response, 200);
+        petAssertions.assertPetUpdated(response, pet);
+
+        var getResponse = petService.getPet(pet.getId());
+        petAssertions.assertStatusCode(getResponse, 200);
+        petAssertions.assertPetReturned(getResponse, pet);
+
+        petService.deletePet(pet.getId());
     }
 
     @Test
     public void deleteNonExistingPetTest() {
-        long invalidId = 1111111;
+        long invalidId = generatePetId();
 
         var response = petService.deletePet(invalidId);
 
         petAssertions.assertStatusCode(response, 404);
+    }
+
+    private Pet buildPet(String namePrefix, String status) {
+        long id = generatePetId();
+        return new Pet(id, namePrefix + "-" + id, status);
+    }
+
+    private long generatePetId() {
+        return ThreadLocalRandom.current().nextLong(1_000_000_000L, 9_999_999_999L);
     }
 }
