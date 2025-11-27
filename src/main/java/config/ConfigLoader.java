@@ -12,11 +12,11 @@ public class ConfigLoader {
     private ConfigLoader() {
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("application.properties")) {
             if (input == null) {
-                throw new RuntimeException("❌ Could not find application.properties in resources folder");
+                throw new RuntimeException("Could not find application.properties in resources folder");
             }
             properties.load(input);
         } catch (IOException e) {
-            throw new RuntimeException("❌ Failed to load application.properties", e);
+            throw new RuntimeException("Failed to load application.properties", e);
         }
     }
 
@@ -30,7 +30,7 @@ public class ConfigLoader {
     private String getProperty(String key) {
         String value = properties.getProperty(key);
         if (value == null) {
-            throw new RuntimeException("❌ Property '" + key + "' is missing in application.properties");
+            throw new RuntimeException("Property '" + key + "' is missing in application.properties");
         }
         return value.trim();
     }
