@@ -11,7 +11,7 @@ public class TestBase {
 
     @BeforeMethod
     public void setUp() {
-        petService = new PetService();     // ✔ must NOT require arguments
+        petService = new PetService();
         petAssertions = new PetAssertions();
     }
 }

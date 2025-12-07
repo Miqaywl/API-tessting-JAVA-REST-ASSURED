@@ -24,8 +24,8 @@ public class ApiClient {
                     .addHeader("Accept", "application/json")
                     .addHeader("Content-Type", "application/json")
                     .setRelaxedHTTPSValidation("TLS")
-                    .addFilter(new RequestLoggingFilter())     // logs request
-                    .addFilter(new ResponseLoggingFilter())    // logs response
+                    .addFilter(new RequestLoggingFilter())
+                    .addFilter(new ResponseLoggingFilter())
                     .setConfig(RestAssured.config()
                             .httpClient(HttpClientConfig.httpClientConfig()
                                     .setParam("http.connection.timeout", ConfigLoader.getInstance().getTimeout())
