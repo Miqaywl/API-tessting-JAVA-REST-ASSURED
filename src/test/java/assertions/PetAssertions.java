@@ -6,11 +6,11 @@ import org.testng.Assert;
 
 public class PetAssertions {
 
-
     public void assertStatusCode(Response response, int expectedCode) {
         Assert.assertEquals(response.getStatusCode(), expectedCode,
                 "Status code mismatch");
     }
+
 
     public void assertPetCreated(Response response, Pet expectedPet) {
         Pet actual = response.as(Pet.class);
@@ -20,6 +20,7 @@ public class PetAssertions {
         Assert.assertEquals(actual.getStatus(), expectedPet.getStatus(), "Pet status mismatch");
     }
 
+
     public void assertPetReturned(Response response, Pet expectedPet) {
         Pet actual = response.as(Pet.class);
 
@@ -27,6 +28,7 @@ public class PetAssertions {
         Assert.assertEquals(actual.getName(), expectedPet.getName(), "Pet name mismatch after GET");
         Assert.assertEquals(actual.getStatus(), expectedPet.getStatus(), "Pet status mismatch after GET");
     }
+
 
     public void assertPetUpdated(Response response, Pet expectedPet) {
         Pet actual = response.as(Pet.class);
